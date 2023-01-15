@@ -1,0 +1,40 @@
+.tag {
+    display: inline-block;
+    border: 5px solid #6fb5f1;
+    background-color: #6fb5f1;
+    border-radius: 25px;
+    padding: 6px;
+    margin: 10px;
+    font-size: 0.7em;
+    cursor: default;
+    position: relative;
+}
+
+
+
+.tag-selected {
+    display: inline-block;
+    border: 5px solid #b40c50;
+    background-color: #b40c50;
+    border-radius: 25px;
+    padding: 6px;
+    margin: 10px;
+    font-size: 0.7em;
+    cursor: default;
+    position: relative;
+}
+
+.x {
+    position: absolute;
+    border: 5px solid #ec514e;
+    background-color: #ec514e;
+    height: 10px;
+    width: 10px;
+    border-radius: 25px;
+    top: -10px;
+    right: -10px;
+    /*align-content: center;*/
+    /*justify-content: center;*/
+    vertical-align: middle;
+    text-align: center;
+}

@@ -1,0 +1,22 @@
+.box {
+    margin-top: 20px;
+    display: inline-block;
+    /*background-color: #6fb5f1;*/
+    /*display:inline-block;*/
+}
+
+
+
+.tagForm {
+    display: flex;
+    justify-content: space-between;
+}
+
+:root {
+    --level: 0;
+}
+
+tr {
+    display: block;
+    padding-left: calc(var(--level) * 35px);
+}
