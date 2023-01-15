@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest
+		Version="8.0"
+	ExtensionBundleId="com.cep.same"
+	ExtensionBundleVersion="1.0.0"
+	ExtensionBundleName="Lame"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+	<ExtensionList>
+		<Extension Id="com.cep.same.lame" Version="1.0" />
+	</ExtensionList>
+
+	<ExecutionEnvironment>
+		<HostList>
+			<Host Name="AEFT" Version="18.0" />
+		</HostList>
+
+	<LocaleList>
+		<Locale Code="All" />
+	</LocaleList>
+
+	<RequiredRuntimeList>
+		<RequiredRuntime Name="CSXS" Version="8.0" />
+	</RequiredRuntimeList>
+</ExecutionEnvironment>
+
+	<DispatchInfoList>
+		<Extension Id="com.cep.same.lame">
+			<DispatchInfo>
+
+			<Resources>
+				<MainPath>./my-app/build/index.html</MainPath>
+				<ScriptPath>./jsx/aftereffects.jsx</ScriptPath>
+				<CEFCommandLine>
+					<Parameter>--enable-nodejs</Parameter>
+					<Parameter>--mixed-context</Parameter>
+				</CEFCommandLine>
+			</Resources>
+
+			<Lifecycle>
+				<AutoVisible>true</AutoVisible>
+			</Lifecycle>
+
+			<UI>
+
+				<Type>Panel</Type>
+				<Menu>Lame</Menu>
+
+				<Geometry>
+					<Size>
+						<Height>565</Height>
+						<Width>490</Width>
+					</Size>
+					<MinSize>
+						<Height>565</Height>
+						<Width>490</Width>
+					</MinSize>
+					<MaxSize>
+						<Height>565</Height>
+						<Width>490</Width>
+					</MaxSize>
+					
+				</Geometry>
+
+			</UI>
+		</DispatchInfo>
+	</Extension>
+</DispatchInfoList>
+</ExtensionManifest>
