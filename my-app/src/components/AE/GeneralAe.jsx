@@ -6,16 +6,16 @@ import {evalScript} from '../../AEService/Extend';
 function GeneralAe({tags}) {
     const folderKey = 'FolderId';
     const compKey = 'CompId';
-    const downloadedIdsKey = 'importedIds';
-    const layerIdsKey = 'layerIds';
+    const videoKey = 'Videos';
     const emptyPreset = {key: null, importedId: null, layerId: null, markers: []};
+    const emptyVideo = {key: null, importedId: null, layerId: null};
 
 
     const [projectPath, setProjectPath] = useState('');
     const [folderId, setFolderId] = useState('');
     const [compId, setCompId] = useState('');
-    const [importedIds, setImportedIds] = useState([]);
-    const [layerIds, setLayerIds] = useState([]);
+    const [videos, setVideos] = useState([]);
+
 
     const [selectedPreset, setSelectedPreset] = useState(emptyPreset);
 
@@ -27,8 +27,7 @@ function GeneralAe({tags}) {
             });
         setFolderId(localStorage.getItem(folderKey));
         setCompId(localStorage.getItem(compKey));
-        setLayerIds(JSON.parse(localStorage.getItem(layerIdsKey)));
-        setImportedIds(JSON.parse(localStorage.getItem(downloadedIdsKey)));
+        setVideos(JSON.parse(localStorage.getItem(videoKey)));
     }, []);
 
     useEffect(() => {
@@ -44,12 +43,8 @@ function GeneralAe({tags}) {
     }, [compId]);
 
     useEffect(() => {
-        localStorage.setItem(downloadedIdsKey, JSON.stringify(importedIds));
-    }, [importedIds]);
-
-    useEffect(() => {
-        localStorage.setItem(layerIdsKey, JSON.stringify(layerIds));
-    }, [layerIds]);
+        localStorage.setItem(videoKey, JSON.stringify(videos));
+    }, [videos]);
 
     const createProj = () => {
         evalScript('createProj()')
@@ -66,17 +61,15 @@ function GeneralAe({tags}) {
     };
 
     const addItemsToComp = () => {
-        const res = [];
-        importedIds.map((it, ind) => {
-            res.push({id: it, startTime: selectedPreset.markers[ind]});
+        videos.forEach(async (it, ind) => {
+            it.layerId = await evalScript(`addItemToComp(${it.importedId}, ${compId}, ${selectedPreset.markers[ind]})`)
         });
-        evalScript(`addItemToCompBulk('${JSON.stringify(res)}', ${compId})`)
-            .then((ids) => setLayerIds(ids));
+        setVideos([...videos])
     };
     const stretchLayers = () => {
         const res = [];
-        layerIds.map((it, ind) => {
-            res.push({id: it, endTime: selectedPreset.markers[ind]});
+        videos.map((it, ind) => {
+            res.push({id: it.layerId, endTime: selectedPreset.markers[ind]});
         });
         evalScript(`stretchLayerBulk('${JSON.stringify(res)}')`)
             .then((re) => console.log(re));
@@ -90,6 +83,7 @@ function GeneralAe({tags}) {
                          compId={compId}
                          selectedPreset={selectedPreset}
                          setSelectedPreset={setSelectedPreset}
+                         setCompId={setCompId}
                 />
                 <button onClick={createProj}>Create Project</button>
                 <button onClick={createComp}>Create Comp</button>
@@ -99,7 +93,7 @@ function GeneralAe({tags}) {
                 <TagsBoxSelectable tags={tags}
                                    projectPath={projectPath.replace(/\\/g, '\\\\')}
                                    folderId={folderId}
-                                   updateId={setImportedIds}
+                                   updateId={setVideos}
                 />
             </div> :
             <div>Create or open Project, pls_)</div>

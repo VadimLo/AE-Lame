@@ -3,7 +3,7 @@ import {evalScript} from '../AEService/Extend';
 import PresetService from '../API/PresetService';
 
 
-function Presets({projectPath, compId, folderId, selectedPreset, setSelectedPreset}) {
+function Presets({projectPath, compId, folderId, selectedPreset, setSelectedPreset, setCompId}) {
     const emptyPreset = {key: null, importedId: null, layerId: null, markers: []};
     const [presets, setPresets] = useState([]);
 
@@ -27,7 +27,7 @@ function Presets({projectPath, compId, folderId, selectedPreset, setSelectedPres
             .then(async (layerId) => setSelectedPreset({
                 ...selectedPreset,
                 layerId: layerId,
-                markers: await evalScript(`getLayerMarkers(${layerId})`)
+                markers: await evalScript(`getLayerMarkers(${layerId})`),
             }));
     };
 
@@ -48,10 +48,12 @@ function Presets({projectPath, compId, folderId, selectedPreset, setSelectedPres
     };
 
     const loadLocalPreset = async () => {
-        const layerId = await evalScript(`getSelectedLayerId()`)
-        const markers = await evalScript(`getLayerMarkers(${layerId})`)
-        setSelectedPreset({...selectedPreset, layerId: layerId, key: "local", markers: markers});
-    }
+        const layerId = await evalScript(`getSelectedLayerId()`);
+        const markers = await evalScript(`getLayerMarkers(${layerId})`);
+        const compId = await evalScript(`getActiveCompId()`);
+        setCompId(compId);
+        setSelectedPreset({...selectedPreset, layerId: layerId, key: 'local', markers: markers});
+    };
 
 
     return (
@@ -73,7 +75,7 @@ function Presets({projectPath, compId, folderId, selectedPreset, setSelectedPres
                         </div>,
                     )
             }
-            <button onClick={loadLocalPreset}>Load local Preset</button>
+            <button onClick={loadLocalPreset}>Load local comp with preset</button>
         </div>
     );
 }

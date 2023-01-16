@@ -19,8 +19,8 @@ function App() {
 
 
     async function loadTags() {
-        const response = await TagService.getAllTags()
-        console.log(response.data)
+        const response = await TagService.getAllTags();
+        console.log(response.data);
         response.data.forEach((s) => s.isHovering = false);
         // const posts = await PostService.getAllPosts()
         // setPosts(posts.data);
@@ -29,24 +29,24 @@ function App() {
 
 
     return (<div className="App">
-            <button onClick={() => setAeMod(!aeMod)}>Change mod</button>
-            {aeMod ?
-                <div>
-                    <div className="b2">
-                        <UploadVideo
-                            tags={tags}
+        <button onClick={() => setAeMod(!aeMod)}>Change mod</button>
+        {aeMod ?
+            <div>
+                <div className="b2">
+                    <UploadVideo
+                        tags={tags}
 
-                        />
-                        <CreateTag
-                            tags={tags}
-                            updateTags={setTags}
-                        />
-                    </div>
-                    {/*<Posts tags={tags} posts={posts}></Posts>*/}
-                </div> :
-                <GeneralAe  tags={tags}/>
-            }
-        </div>
+                    />
+                    <CreateTag
+                        tags={tags}
+                        updateTags={setTags}
+                    />
+                </div>
+                {/* <Posts tags={tags} posts={posts}></Posts>*/}
+            </div> :
+            <GeneralAe tags={tags}/>
+        }
+    </div>
 
     );
 }

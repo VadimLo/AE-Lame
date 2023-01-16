@@ -2,10 +2,10 @@ import './TagsBox.css';
 import React, {useEffect, useState} from 'react';
 import PresignService from '../API/PresignService';
 import ImportService from '../AEService/ImportService';
+import LVideo from "../model/LVideo";
 
 function TagsBoxSelectable(props) {
     const [tags, setTags] = useState([]);
-    const [imId, setImId] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
 
     useEffect(() => {
@@ -15,17 +15,16 @@ function TagsBoxSelectable(props) {
     }, [props.tags]);
 
     const onTagClick = (tagEl) => {
-        let copy = {...tagEl, children: []}
+        const copy = {...tagEl, children: []};
         setSelectedTags([...selectedTags, copy]);
-        console.log(selectedTags)
+        console.log(selectedTags);
     };
     const selectTag = (tag) => {
-        console.log('asdasdasda')
         tags.forEach((v) => {
-            if (v.id === tag.id) {
-                v.selected = !v.selected;
-            }
-        },
+                if (v.id === tag.id) {
+                    v.selected = !v.selected;
+                }
+            },
         );
         setTags([...tags]);
     };
@@ -33,8 +32,9 @@ function TagsBoxSelectable(props) {
     const drawTags = (tags, fun) => {
         return tags.map((tag) => {
             const rows = [];
-            rows.push(<div key={tag.id.toString() + tag.parentId + "x"} className={tag.selected ? 'tag-selected' : 'tag'}
-                           onClick={() => fun(tag)}>{tag.name}</div>)
+            rows.push(<div key={tag.id.toString() + tag.parentId + 'x'}
+                           className={tag.selected ? 'tag-selected' : 'tag'}
+                           onClick={() => fun(tag)}>{tag.name}</div>);
             if (tag.children.length > 0) {
                 rows.push(drawTags(tag.children, fun));
             }
@@ -55,19 +55,18 @@ function TagsBoxSelectable(props) {
                     return Promise.all(links.map((link, ind) =>
                         ImportService.importFile(props.projectPath + '\\\\' + ind + '.mp4', props.folderId)));
                 }).then((values) => {
-                    setImId(values);
-                    props.updateId(values);
+                    props.updateId(values.map(value => new LVideo(null, value, null)))
                 });
             });
     };
     return (
         <div>
-            {/*{tags.map((tag) =>*/}
+            {/* {tags.map((tag) =>*/}
             {/*    <div key={tag.id + 'x'} className={tag.selected ? 'tag-selected' : 'tag'}*/}
             {/*        onClick={() => selectTag(tag)}>*/}
             {/*        <div>{tag.name}</div>*/}
             {/*    </div>,*/}
-            {/*)}*/}
+            {/* )}*/}
             {
                 drawTags(tags, onTagClick)
             }

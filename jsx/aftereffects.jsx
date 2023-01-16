@@ -1,10 +1,4 @@
-﻿// #include 'json2.js'
-
-function main() {
-    alert("hello");
-    return "result";
-}
-
+﻿
 function createProj() {
     app.newProject().save(File('C:\\Users\\vadim\\Desktop\\lm\\c'))
 
@@ -14,7 +8,6 @@ function createComp() {
     return app.project.items.addComp("LameComp", 1920, 1080, 1, 100, 60).id;
 
 }
-
 
 function importFile(path, folderId) {
     var importOptions = new ImportOptions();
@@ -99,4 +92,8 @@ function getSelectedLayerId() {
     var aComp = app.project.activeItem;
     var layer = aComp.selectedLayers[0];
     return layer.id;
+}
+
+function getActiveCompId() {
+    return app.project.activeItem.id;
 }

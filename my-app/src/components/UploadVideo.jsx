@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react';
 import PostService from '../API/PostService';
-import axios from "axios";
+import axios from 'axios';
 
 const UploadVideo = ({tags}) => {
     const [selectedFile, setSelectedFile] = useState();
@@ -16,7 +16,7 @@ const UploadVideo = ({tags}) => {
             if (tag.children) {
                 const foundParents = findParentTagsRecursive(tag.children, targetTag, [...result, {
                     ...tag,
-                    children: []
+                    children: [],
                 }]);
                 if (foundParents) {
                     return foundParents;
@@ -24,14 +24,14 @@ const UploadVideo = ({tags}) => {
             }
         }
         return null;
-    }
+    };
     const onTagClick = (tagEl) => {
-        let copy = {...tagEl, children: []}
-        const s = [...selectedTags, copy, ...findParentTagsRecursive(tags, copy, [])]
+        const copy = {...tagEl, children: []};
+        const s = [...selectedTags, copy, ...findParentTagsRecursive(tags, copy, [])];
         setSelectedTags([...s.filter((tag, index, self) =>
-                index === self.findIndex(t => (
-                    t.id === tag.id && t.parentId === tag.parentId
-                ))
+            index === self.findIndex((t) => (
+                t.id === tag.id && t.parentId === tag.parentId
+            )),
         )]);
     };
 
@@ -44,7 +44,7 @@ const UploadVideo = ({tags}) => {
 
     const resetState = () => {
         setSelectedFile(null);
-        setSelectedTags([])
+        setSelectedTags([]);
     };
 
     const handleUpload = async (file) => {
@@ -52,26 +52,25 @@ const UploadVideo = ({tags}) => {
             fileName: file.name,
             fileType: file.type,
             tags: selectedTags.map((v) => v.id),
-        })
+        });
         axios.put(responsePresign.data.file, file, {
             headers: {
                 'Content-Type': file.type,
             },
-        })
+        });
         axios.put(responsePresign.data.img, handleLoadedMetadata(), {
             headers: {
                 'Content-Type': 'image/jpeg',
             },
-        })
-        resetState()
-
+        });
+        resetState();
     };
 
     const drawTags = (tags, fun) => {
         return tags.map((tag) => {
             const rows = [];
             rows.push(<div key={tag.id.toString() + tag.parentId}
-                           onClick={() => fun(tag)}>{tag.name}</div>)
+                onClick={() => fun(tag)}>{tag.name}</div>);
             if (tag.children.length > 0) {
                 rows.push(drawTags(tag.children, fun));
             }
@@ -87,12 +86,8 @@ const UploadVideo = ({tags}) => {
         canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 3, 3);
         const video1 = canvas.toDataURL('image/jpeg');
-        console.log(video1)
-        // new File(dataURLtoBlob(video1, "asd.jpeg"))
-        return  new File([dataURLtoBlob(video1)], "asd.jpeg");
-        // console.log(imageDataUrl)
-        // You can now send the image data to another service or do something else with it
-    }
+        return new File([dataURLtoBlob(video1)], 'asd.jpeg');
+    };
 
     function dataURLtoBlob(dataURL) {
         const parts = dataURL.split(',');
@@ -103,7 +98,7 @@ const UploadVideo = ({tags}) => {
         for (let i = 0; i < rawLength; ++i) {
             uInt8Array[i] = raw.charCodeAt(i);
         }
-        return new Blob([uInt8Array], { type: contentType });
+        return new Blob([uInt8Array], {type: contentType});
     }
 
 
